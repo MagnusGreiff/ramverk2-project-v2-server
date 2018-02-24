@@ -10,6 +10,8 @@ const handleProtocols = (protocols /*, request */ ) => {
     return false;
 };
 
+let users = [];
+
 let makeWss = (server) => {
     return new WebSocket.Server({
         server: server,
@@ -35,6 +37,23 @@ let broadcastExcept = (wss, ws, data) => {
     console.info(`Broadcasted data to ${clients} (${wss.clients.size}) clients.`);
 };
 
+let broadCastAll = (wss, ws, data) => {
+    let clients = 0;
+
+    wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            clients++;
+
+            let msg = {
+                data: data
+            };
+
+            client.send(JSON.stringify(msg));
+        }
+    });
+    console.info(`Broadcasted data to ${clients} (${wss.clients.size}) clients.`);
+}
+
 let socket = (server) => {
     const wss = makeWss(server);
 
@@ -42,7 +61,31 @@ let socket = (server) => {
         console.info("Connection received. Adding client.");
 
         ws.on("message", (message) => {
-            console.log(message);
+            let parsedJson = JSON.parse(message);
+
+            if (parsedJson.type == "newUser") {
+                users.push(parsedJson.name);
+                let userList = {
+                    type: 'userList',
+                    userList: users
+                };
+                broadCastAll(wss, ws, userList);
+            } else if (parsedJson.type == "disconnectedUser") {
+                console.log('inside disconnect');
+                console.log(parsedJson);
+                let name = users.indexOf(parsedJson.name);
+                if(name != -1) {
+                	users.splice(name, 1);
+                }
+                let userList = {
+                    type: 'userList',
+                    userList: users
+                };
+                broadCastAll(wss, ws, userList);
+            }
+
+            // console.log(typeof parsedJson);
+            // console.log(parsedJson);
             broadcastExcept(wss, ws, message);
         });
 
@@ -51,6 +94,7 @@ let socket = (server) => {
         });
 
         ws.on("close", (code, reason) => {
+            console.log(reason);
             console.info(`Closing connection: ${code} ${reason}`);
         });
     });

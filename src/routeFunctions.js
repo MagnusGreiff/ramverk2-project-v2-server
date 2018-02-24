@@ -68,7 +68,7 @@ let getAllContentFromDatabase = async (res) => {
         let data = await db.getAllContentFromDatabase({}, {
             _id: 0
         }, 20, {
-            date: 1
+            date: -1
         })
 
         console.log(data);
