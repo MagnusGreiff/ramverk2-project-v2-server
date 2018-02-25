@@ -82,11 +82,9 @@ let socket = (server) => {
                     userList: users
                 };
                 broadCastAll(wss, ws, userList);
+            } else {
+                broadcastExcept(wss, ws, message);
             }
-
-            // console.log(typeof parsedJson);
-            // console.log(parsedJson);
-            broadcastExcept(wss, ws, message);
         });
 
         ws.on("error", (error) => {
