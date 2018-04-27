@@ -5,7 +5,7 @@
     "scripts": {
         "start": "node app.js",
         "start-docker": "docker-compose up -d express",
-        "stop-docker": "docker-compose down express",
+        "stop-docker": "docker-compose stop express && docker-compose stop mongodb",
         "test": "mocha 'test/**/*.js' --exit",
         "test-scrutinizer": "nyc --all --reporter=clover mocha test/**/*.js --exit",
         "test-nyc": "nyc --all --reporter=html --reporter=text mocha 'test/**/*.js' --exit",
