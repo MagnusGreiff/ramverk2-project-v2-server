@@ -52,7 +52,7 @@ let broadCastAll = (wss, ws, data) => {
         }
     });
     console.info(`Broadcasted data to ${clients} (${wss.clients.size}) clients.`);
-}
+};
 
 let socket = (server) => {
     const wss = makeWss(server);
@@ -69,18 +69,20 @@ let socket = (server) => {
                     type: 'userList',
                     userList: users
                 };
+
                 broadCastAll(wss, ws, userList);
             } else if (parsedJson.type == "disconnectedUser") {
-                console.log('inside disconnect');
-                console.log(parsedJson);
                 let name = users.indexOf(parsedJson.name);
-                if(name != -1) {
-                	users.splice(name, 1);
+
+                if (name != -1) {
+                    users.splice(name, 1);
                 }
+
                 let userList = {
                     type: 'userList',
                     userList: users
                 };
+
                 broadCastAll(wss, ws, userList);
             } else {
                 broadcastExcept(wss, ws, message);
@@ -96,7 +98,7 @@ let socket = (server) => {
             console.info(`Closing connection: ${code} ${reason}`);
         });
     });
-}
+};
 
 module.exports = {
     socket: socket

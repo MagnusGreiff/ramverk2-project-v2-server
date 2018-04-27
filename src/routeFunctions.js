@@ -69,18 +69,16 @@ let getAllContentFromDatabase = async (res) => {
             _id: 0
         }, 100, {
             date: -1
-        })
-
-        console.log(data);
+        });
 
         res.json(data);
         res.end();
 
-        return "retrieved all data from database"
+        return "retrieved all data from database";
     } catch (err) {
         console.error(err);
     }
-}
+};
 
 let insertIntoDatabase = async (req, res) => {
     let obj = await req.params.ob;

@@ -4,10 +4,15 @@
     "private": true,
     "scripts": {
         "start": "node app.js",
-        "start-express-mongo": "docker-compose up --build -d express",
+        "start-docker": "docker-compose up -d express",
+        "stop-docker": "docker-compose down express",
         "test": "mocha 'test/**/*.js' --exit",
         "test-scrutinizer": "nyc --all --reporter=clover mocha test/**/*.js --exit",
-        "test-nyc": "nyc --all --reporter=html --reporter=text mocha 'test/**/*.js' --exit"
+        "test-nyc": "nyc --all --reporter=html --reporter=text mocha 'test/**/*.js' --exit",
+        "test-browser": "npm run test-nyc && open build/coverage/index.html",
+        "test-docker-1": "docker-compose up test860",
+        "test-docker-2": "docker-compose up test830",
+        "test-docker-3": "docker-compose up test810"
     },
     "repository": {
         "type": "git",

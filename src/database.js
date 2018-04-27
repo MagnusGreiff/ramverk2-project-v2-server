@@ -1,6 +1,6 @@
 "use strict";
 
-const dsn = process.env.DBWEBB_DSN || "mongodb://localhost:27017/server";
+const dsn = process.env.DBWEBB_DSN || "mongodb://localhost:27017/history";
 const mongo = require("mongodb").MongoClient;
 
 let getAllContentFromDatabase = async (criteria, projection, limit, sort) => {
@@ -17,8 +17,9 @@ let insertToCollection = async (obj) => {
     const db = await mongo.connect(dsn);
     const col = await db.collection('history');
     let ob = JSON.parse(obj);
-    const insert = await col.insert(ob);
 
+    // const insert = await col.insert(ob);
+    await col.insert(ob);
     await db.close();
 
     return 'inserted';

@@ -12,7 +12,7 @@ const server = http.createServer(app);
 const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/mumin";
 //
 const socket = require('./src/socket');
-// // //
+
 socket.socket(server);
 
 // all environments

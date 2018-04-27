@@ -1,69 +1,47 @@
 version: "2"
 services:
-    node860:
-        image: "node:8.6.0"
-        user: "node"
-        working_dir: /home/node/app
-        environment:
-          - NODE_ENV=production
-        volumes:
-          - ./:/home/node/app
-        ports:
-          - "3060:3000"
-        command: "npm start"
-    node830:
-        image: "node:8.3.0"
-        user: "node"
-        working_dir: /home/node/app
-        environment:
-          - NODE_ENV=production
-        volumes:
-          - ./:/home/node/app
-        ports:
-          - "3030:3000"
-        command: "npm start"
-    node810:
-        image: "node:8.1.0"
-        user: "node"
-        working_dir: /home/node/app
-        environment:
-          - NODE_ENV=production
-        volumes:
-          - ./:/home/node/app
-        ports:
-          - "3010:3000"
-        command: "npm start"
-
-    node860-test:
-        build:
-            context: .
-            dockerfile: docker/node860/dockerfile
-        # volumes:
-        #     - ./:/home/node/app
-        command: "make test"
-
-    node830-test:
-        build:
-            context: .
-            dockerfile: docker/node830/dockerfile
-        # volumes:
-        #     - ./:/home/node/app
-        command: "make test"
-
-    node810-test:
+    test810:
         build:
             context: .
             dockerfile: docker/node810/dockerfile
-        # volumes:
-        #     - ./:/home/node/app
-        command: "make test"
-
+        environment:
+            - DBWEBB_DSN=mongodb://mongodb:27017/history
+        volumes:
+            - ./:/app/
+            - /app/node_modules/
+        links:
+            - mongodb
+        command: "npm test"
+    test830:
+        build:
+            context: .
+            dockerfile: docker/node830/dockerfile
+        environment:
+            - DBWEBB_DSN=mongodb://mongodb:27017/history
+        volumes:
+            - ./:/app/
+            - /app/node_modules/
+        links:
+            - mongodb
+        command: "npm test"
+    test860:
+        build:
+            context: .
+            dockerfile: docker/node860/dockerfile
+        environment:
+            - DBWEBB_DSN=mongodb://mongodb:27017/history
+        volumes:
+            - ./:/app/
+            - /app/node_modules/
+        links:
+            - mongodb
+        command: "npm test"
     express:
         build:
             context: .
             dockerfile: docker/express/dockerfile
         environment:
-            - DBWEBB_DSN=mongodb://mongodb:27017/server
+            - DBWEBB_DSN=mongodb://mongodb:27017/history
         volumes:
             - ./:/app/
             - /app/node_modules/

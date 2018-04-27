@@ -8,8 +8,3 @@ COPY package.json /app
 
 # Bundle app source
 COPY . .
-
-RUN make clean-all
-RUN make setup-tools-js
-RUN make check-tools-js
-RUN make install

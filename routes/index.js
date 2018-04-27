@@ -1,6 +1,5 @@
 "use strict";
 
-const db = require('../src/database');
 const rf = require('../src/routeFunctions');
 const token = rf.checkApiToken("../config/token", "../config/example-token.json");
 
@@ -26,7 +25,7 @@ exports.users = (req, res) => {
     let id = req.params.id;
 
     rf.request(id, 'filter=!)Rwe3d0xUOrUT)mXD2__Jipi',
-        'https://api.stackexchange.com/2.2/users/', key, type, res);;
+        'https://api.stackexchange.com/2.2/users/', key, type, res);
 };
 
 
